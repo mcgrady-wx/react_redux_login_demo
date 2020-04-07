@@ -10,7 +10,7 @@ import { Provider } from "react-redux";
 
 import reducers from './store/reducers';
 
-const store=createStore(reducers,composeWithDevTools(applyMiddleware(thunk,logger)))
+const store=createStore(reducers,composeWithDevTools(applyMiddleware(logger,thunk)))
 
 ReactDOM.render(
   <Provider store={store}>

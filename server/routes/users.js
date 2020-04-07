@@ -1,6 +1,6 @@
 const express = require("express");
-const isEmpty = require("lodash/isEmpty");/*lodash是一个遍历的工具库*/
-const validator = require("validator");/*validator是一个请求参数校验的库*/
+const isEmpty = require("lodash/isEmpty");/*lodash是一个遍历的工具库，验证是否为空*/
+const validator = require("validator");/*validator是一个请求参数校验的库，规则验证*/
 const router = express.Router();
 
 
@@ -32,16 +32,19 @@ const validatorInput = (data) =>{
 router.post("/",(req,res) =>{
 	/*req.body就是传递过来得参数*/
     const { errors,isValid } = validatorInput(req.body);
-    if(!isValid){
-        /**
+     /**
          * 返回的数据类型
          * {
          *   username:"请输入用户ing"
          *      ...
          * }
          */
-        res.status(400).json(errors);
+    if (isValid) {
+    	 res.send({ success:true })
+    } else{
+    	res.status(400).json(errors);
     }
+
 })
 
 module.exports = router;
