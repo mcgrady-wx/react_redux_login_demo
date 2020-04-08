@@ -3,6 +3,7 @@ import SignupForm from './SignupForm'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as signupActions from '../../store/actions/signupActions'
+import * as flashActions from "../../store/actions/flashMessages"
 
 class SignupPage extends React.Component {
     render() {
@@ -10,7 +11,7 @@ class SignupPage extends React.Component {
             <div className="row">
                 <div className="col-md-3"></div>
                 <div className="col-md-6">
-                    <SignupForm signupActions={this.props.signupActions}/>
+                    <SignupForm signupActions={this.props.signupActions} flashActions={this.props.flashActions}/>
                 </div>
                 <div className="col-md-3"></div>
             </div>
@@ -20,7 +21,8 @@ class SignupPage extends React.Component {
 
 const mapDispatchToProps=(dispatch)=>{
 	return {
-		signupActions:bindActionCreators(signupActions,dispatch)
+		signupActions:bindActionCreators(signupActions,dispatch),
+		flashActions:bindActionCreators(flashActions,dispatch)
 	}
 }
 
