@@ -1,6 +1,7 @@
 const express = require("express");
 const isEmpty = require("lodash/isEmpty");/*lodash是一个遍历的工具库，验证是否为空*/
 const validator = require("validator");/*validator是一个请求参数校验的库，规则验证*/
+const sqlFn = require("../mysql");
 const router = express.Router();
 
 
@@ -39,10 +40,19 @@ router.post("/",(req,res) =>{
          *      ...
          * }
          */
-    if (isValid) {
-    	 res.send({ success:true })
-    } else{
-    	res.status(400).json(errors);
+    // 接受数据库语句
+    var sql = "insert into user values (null,?,?,?,?)";
+    var arr = [req.body.email,req.body.username,req.body.password,req.body.passwordConfirmation];
+    if(isValid){
+        sqlFn(sql,arr,function(data){
+            if(data.affectedRows){
+                res.send({success:true})
+            }else{
+                res.status(400).json({error:'注册失败'});
+            }
+        })
+    }else{
+        res.status(400).json(errors);
     }
 
 })
