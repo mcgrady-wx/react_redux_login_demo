@@ -11,11 +11,12 @@ class SignupForm extends React.Component{
 			password:'',
             passwordConfirmation:'',
             errors:{},
-            isLoading:false
+            isLoading:false,
+            invalid:false
 		}
 	}
 	render(){
-		const { errors,isLoading } = this.state
+		const { errors,isLoading,invalid } = this.state
 		return (
 			<form onSubmit={ this.onSubmit.bind(this) }>
 				<h1>Join our community</h1>
@@ -26,6 +27,7 @@ class SignupForm extends React.Component{
                         name="username"
                         value={ this.state.username }
                         onChange={ this.onChange.bind(this) }
+                        onBlur={ this.onBlur.bind(this) }
                         className={ classnames('form-control',{'is-invalid':errors.username}) }
                     />
                     {errors.username&&<span className="form-text text-muted">{ errors.username }</span>}
@@ -64,7 +66,7 @@ class SignupForm extends React.Component{
                     {errors.passwordConfirmation&&<span className="form-text text-muted">{ errors.passwordConfirmation }</span>}
                 </div>
                 <div className="form-group">
-                    <button className="btn btn-primary btn-lg">注册</button>
+                    <button disabled={  isLoading || invalid} className="btn btn-primary btn-lg">注册</button>
                 </div>
 			</form>
 		)
@@ -91,6 +93,30 @@ class SignupForm extends React.Component{
             ({ response }) => { this.setState({ errors:response.data,isLoading:false }) }
 		)
 		//console.log(this.state.errors)
+	}
+	onBlur(e){
+		let name=e.target.name;
+		let val=e.target.value;
+		let invalid
+		if (val !=="") {
+			this.props.signupActions.isUserExists(val).then(
+				(res)=>{
+					//console.log(res)
+					let errors=this.state.errors;
+					if (res.data[0]) {
+						errors[name]="用户名存在" ;
+						invalid=true
+					} else {
+						errors[name]="";
+						invalid=false
+					}
+					this.setState({
+						errors,invalid
+					})
+					//console.log(this.state.errors)
+				}
+			)
+		}
 	}
 }
 

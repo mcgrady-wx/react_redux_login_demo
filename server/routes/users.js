@@ -57,4 +57,16 @@ router.post("/",(req,res) =>{
 
 })
 
+router.get("/:username",(req,res) =>{
+    var sql = "select * from user where `username`=?";
+    var arr = [req.params.username];
+    sqlFn(sql,arr,function(data){
+        if(data){
+            res.send(data)
+        }else{
+            res.send({})
+        }
+    })
+})
+
 module.exports = router;
