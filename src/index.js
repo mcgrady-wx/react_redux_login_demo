@@ -10,7 +10,17 @@ import { Provider } from "react-redux";
 
 import reducers from './store/reducers';
 
+import setAuthorizationToken from "./utils/setAuthorizationToken"
+import jwtDecode from "jwt-decode"//编译jwt数据
+import {setCurrentUser} from "./store/actions/login"
+
 const store=createStore(reducers,composeWithDevTools(applyMiddleware(logger,thunk)))
+
+if (localStorage.jwtToken) {
+	setAuthorizationToken(localStorage.jwtToken)//设置axios请求头
+	store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)))//把jwt数据添加到redux
+}
+
 
 ReactDOM.render(
   <Provider store={store}>

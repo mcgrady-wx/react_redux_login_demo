@@ -47,7 +47,7 @@ class LoginForm extends React.Component{
                     {errors.password && <span className='form-text text-muted'>{errors.password}</span>}
                 </div>                
                 <div className="form-group">
-                    <button disabled={ isLoading || invalid } className="btn btn-primary btn-lg">注册</button>
+                    <button disabled={ isLoading || invalid } className="btn btn-primary btn-lg">登录</button>
                 </div>
 			</form>
         )
@@ -76,10 +76,7 @@ class LoginForm extends React.Component{
 	    		(res)=>{this.props.history.push("/")},
 	    		(err)=>{
 	    			//console.log(err.response.data.errors)
-	    			this.setState({
-	    				errors:err.response.data.errors,
-	    				isLoading:false
-	    			})
+	    			this.setState({ errors: err.response.data.errors, isLoading: false })
 	    		}
 	    	
 	    	)

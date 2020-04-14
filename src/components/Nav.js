@@ -1,8 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import { connect} from 'react-redux'
+import { logout } from '../store/actions/login'
 
 class Nav extends React.Component {
     render() {
+    	 const { isAuthenticated } = this.props.auth;
+    	 const userLinks = (
+            <ul className="navbar-nav mr-auto">
+                <li className="nav-item">
+                    <a className="nav-link" onClick={ this.logout.bind(this) }>退出</a>
+                </li>
+            </ul>
+        )
+
+        const guestLinks = (
+            <ul className="navbar-nav mr-auto">
+                <li className="nav-item">
+                    <Link className="nav-link" to="/signup">注册</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/login">登录</Link>
+                </li>
+            </ul>
+        )
         return (
             	<nav className="navbar navbar-expand-lg navbar-light bg-light mb-3">
 	                <div className="container">
@@ -12,19 +33,22 @@ class Nav extends React.Component {
 	                    </button>
 	
 	                    <div className="collapse navbar-collapse" id="navbarsExample05">
-	                        <ul className="navbar-nav mr-auto">
-	                            <li className="nav-item">
-	                                <Link className="nav-link" to="/signup">注册</Link>
-	                            </li>
-	                             <li className="nav-item">
-	                                <Link className="nav-link" to="/login">登录</Link>
-	                            </li>
-	                        </ul>
+	                        {isAuthenticated ? userLinks : guestLinks}
 	                    </div>
 	                </div>
 	            </nav>
         )
     }
+    logout(e){
+    	e.preventDefault();
+        this.props.logout();
+    }
 }
 
-export default Nav;
+const mapStateToProps=(state)=>{
+	return {
+		auth:state.auth
+	}
+}
+
+export default connect(mapStateToProps,{ logout })(Nav);
