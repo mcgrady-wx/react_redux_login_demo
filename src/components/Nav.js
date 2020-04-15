@@ -34,6 +34,11 @@ class Nav extends React.Component {
 	
 	                    <div className="collapse navbar-collapse" id="navbarsExample05">
 	                        {isAuthenticated ? userLinks : guestLinks}
+	                        <ul className="navbar-nav mr-auto">
+		                        <li className="nav-item">
+				                    <Link className="nav-link" to="/shop">SHOP</Link>
+				                </li>
+			                </ul>
 	                    </div>
 	                </div>
 	            </nav>
